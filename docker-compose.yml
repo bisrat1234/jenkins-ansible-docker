@@ -1,0 +1,48 @@
+version: '3.9'
+services:
+  docker:
+    image: docker:dind
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
+    volumes:
+      - jenkins-docker-certs:/certs/client
+      - jenkins-data:/var/jenkins_home
+    ports:
+      - "2376:2376"
+    privileged: true
+
+  jenkins:
+    build: ./jenkins
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - jenkins-docker-certs:/certs/client:ro 
+    ports:
+      - "8000:8080"
+      - "50000:50000"
+
+  controlnode:
+    build: ./control_node
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./ansible-config:/usr/local/scripts
+    
+  managednode1:
+    image: ansible-managednode1
+    ports:
+      -  "8080:80"
+
+  
+  managednode2:
+    image: ansible-managednode1
+    ports:
+      - "5432:5432"
+
+volumes:
+  jenkins-docker-certs:
+  jenkins-data:
+  
