@@ -2,7 +2,6 @@ pipeline {
 
    agent any
 
-
     environment {
 
         DOCKER_CRED = credentials('dockerhub-cred')
@@ -26,7 +25,7 @@ pipeline {
 
             steps {
 
-                sh 'echo $DOCKER_CRED_PSW | docker login -u DOCKER_CRED_USR --password-stdin'
+                sh 'echo $DOCKER_CRED_PSW | docker login -u $DOCKER_CRED_USR --password-stdin'
 
             }
 
