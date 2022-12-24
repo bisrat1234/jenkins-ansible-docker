@@ -32,13 +32,13 @@ services:
       - ./ansible-config:/usr/local/scripts
     
   managednode1:
-    image: ansible-managednode1
+    image: ./managed_node/ansible-managednode1
     ports:
       -  "8080:80"
 
   
   managednode2:
-    image: ansible-managednode1
+    image: ./managed_node/ansible-managednode1
     ports:
       - "5432:5432"
 

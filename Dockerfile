@@ -1,13 +1,7 @@
-FROM ubuntu:latest
+from node:latest
 
-RUN apt update && apt install  openssh-server sudo -y && apt install nano -y
+WORKDIR /usr/local/app
 
-RUN useradd -rm -d /home/ubuntu -s /bin/bash -g root -G sudo -u 1000 test 
+copy ./server.js .
 
-RUN  echo 'test:test' | chpasswd
-
-RUN service ssh start
-
-EXPOSE 22
-
-CMD ["/usr/sbin/sshd","-D"]
+CMD ["node","server.js"]
